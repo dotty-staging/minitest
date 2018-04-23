@@ -163,7 +163,7 @@ lazy val minitest = crossProject(JVMPlatform, JSPlatform, NativePlatform).in(fil
     name := "minitest",
     sharedSettings,
     crossVersionSharedSources,
-    requiredMacroCompatDeps
+    // requiredMacroCompatDeps
   )
   .jvmSettings(
     libraryDependencies ++= Seq(
@@ -192,7 +192,7 @@ lazy val minitest = crossProject(JVMPlatform, JSPlatform, NativePlatform).in(fil
     libraryDependencies += "org.scala-native" %%% "test-interface" % nativeVersion
   )
 
-lazy val minitestJVM    = minitest.jvm
+lazy val minitestJVM    = minitest.jvm.settings(dottySettings)
 lazy val minitestJS     = minitest.js
 lazy val minitestNative = minitest.native
 
@@ -220,7 +220,7 @@ lazy val laws = crossProject(JVMPlatform, JSPlatform, NativePlatform)
     scalaJSSettings
   )
 
-lazy val lawsJVM    = laws.jvm
+lazy val lawsJVM    = laws.jvm.settings(dottySettings)
 lazy val lawsJS     = laws.js
 lazy val lawsNative = laws.native
 
@@ -257,3 +257,16 @@ lazy val lawsLegacy = crossProject(JVMPlatform, JSPlatform)
 
 lazy val lawsLegacyJVM = lawsLegacy.jvm
 lazy val lawsLegacyJS  = lawsLegacy.js
+// lazy val lawsNative = laws.native
+
+lazy val dottyVersion = dottyLatestNightlyBuild.get
+lazy val dottySettings = List(
+  scalaVersion := dottyVersion,
+  libraryDependencies := libraryDependencies.value.map(_.withDottyCompat(scalaVersion.value)),
+  scalacOptions := List("-language:Scala2")
+)
+
+TaskKey[Unit]("dottyCompile") := {
+  compile.in(minitestJVM, Test).value
+  compile.in(lawsJVM, Compile).value // Test fail to compile
+}

@@ -10,3 +10,5 @@ addSbtPlugin("org.scala-native"   % "sbt-scala-native"              % scalaNativ
 addSbtPlugin("com.jsuereth"       % "sbt-pgp"                       % "1.1.2")
 addSbtPlugin("com.typesafe.sbt"   % "sbt-git"                       % "1.0.0")
 addSbtPlugin("org.xerial.sbt"     % "sbt-sonatype"                  % "2.3")
+
+addSbtPlugin("ch.epfl.lamp" % "sbt-dotty" % "0.2.2")
