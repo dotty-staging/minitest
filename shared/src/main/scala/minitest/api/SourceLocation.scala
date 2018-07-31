@@ -17,9 +17,8 @@
 
 package minitest.api
 
-import scala.util.{Try => STry}
-import scala.language.experimental.macros
-import scala.reflect.macros.whitebox
+import scala.quoted._
+import scala.tasty._
 
 final case class SourceLocation(
   fileName: Option[String],
@@ -28,33 +27,15 @@ final case class SourceLocation(
 )
 
 object SourceLocation {
-  implicit def fromContext: SourceLocation =
-    SourceLocation(None, None, 0)
-  //   macro Macros.fromContext
+  implicit rewrite def fromContext: SourceLocation = ~fromContextImpl
 
-  // @macrocompat.bundle class Macros(val c: whitebox.Context) {
-  //   import c.universe._
+  def fromContextImpl(implicit tasty: Tasty): Expr[SourceLocation] = {
+    import tasty._
+    val pos = tasty.rootPosition
+    val fileName = pos.sourceFile.getFileName.toString
+    val path = pos.sourceFile.getParent.toString
+    val line = pos.startLine
+    '(SourceLocation(Some(~fileName.toExpr), Some(~path.toExpr), ~line.toExpr))
+  }
 
-  //   def fromContext: Tree = {
-  //     val (fileNameExpr, pathExpr, lineExpr) = getSourceLocation
-  //     val SourceLocationSym = symbolOf[SourceLocation].companion
-  //     q"""$SourceLocationSym($fileNameExpr, $pathExpr, $lineExpr)"""
-  //   }
-
-  //   private def getSourceLocation = {
-  //     val line = c.Expr[Int](Literal(Constant(c.enclosingPosition.line)))
-  //     val file = STry(Option(c.enclosingPosition.source.file.file)).toOption.flatten
-  //     (wrapOption(file.map(_.getName)), wrapOption(file.map(_.getPath)), line)
-  //   }
-
-  //   private def wrapOption[A](opt: Option[A]): c.Expr[Option[A]] =
-  //     c.Expr[Option[A]](
-  //       opt match {
-  //         case None =>
-  //           q"""_root_.scala.None"""
-  //         case Some(value) =>
-  //           val v = c.Expr[A](Literal(Constant(value)))
-  //           q"""_root_.scala.Option($v)"""
-  //       })
-  // }
 }
