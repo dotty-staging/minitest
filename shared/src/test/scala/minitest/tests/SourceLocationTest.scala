@@ -25,11 +25,8 @@ import scala.language.implicitConversions
 object SourceLocationTest extends SimpleTestSuite {
   test("implicit SourceLocation works") {
     val pos = implicitly[SourceLocation]
-    pos match {
-      case SourceLocation(Some("SourceLocationTest.scala"), Some(path), 25) =>
-        assert(path.contains("SourceLocationTest.scala"))
-      case _ =>
-        fail(s"Unexpected value: $pos")
-    }
+    println(pos)
+    assert(pos.line == 27, pos.line.toString)
+    assert(pos.fileName == Some("SourceLocationTest.scala"), pos.fileName.toString)
   }
 }
