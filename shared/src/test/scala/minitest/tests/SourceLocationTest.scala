@@ -20,6 +20,8 @@ package minitest.tests
 import minitest.SimpleTestSuite
 import minitest.api.SourceLocation
 
+import scala.language.implicitConversions
+
 object SourceLocationTest extends SimpleTestSuite {
   test("implicit SourceLocation works") {
     val pos = implicitly[SourceLocation]

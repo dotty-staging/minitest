@@ -263,7 +263,7 @@ lazy val dottyVersion = dottyLatestNightlyBuild.get
 lazy val dottySettings = List(
   scalaVersion := dottyVersion,
   libraryDependencies := libraryDependencies.value.map(_.withDottyCompat(scalaVersion.value)),
-  scalacOptions := List("-language:Scala2")
+  scalacOptions := List()
 )
 
 TaskKey[Unit]("dottyCompile") := {

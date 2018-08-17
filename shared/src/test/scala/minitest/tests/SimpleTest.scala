@@ -21,6 +21,8 @@ import minitest.SimpleTestSuite
 import minitest.api.AssertionException
 import scala.concurrent.Future
 
+import scala.language.implicitConversions
+
 object SimpleTest extends SimpleTestSuite {
   test("ignored test") {
     ignore()
