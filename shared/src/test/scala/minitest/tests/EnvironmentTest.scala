@@ -21,6 +21,8 @@ import minitest.TestSuite
 import scala.concurrent.Future
 import scala.util.Random
 
+import scala.language.implicitConversions
+
 object EnvironmentTest extends TestSuite[Int] {
   def setup(): Int = {
     Random.nextInt(100) + 1
