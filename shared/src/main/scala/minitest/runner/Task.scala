@@ -68,7 +68,11 @@ final class Task(task: TaskDef, cl: ClassLoader) extends BaseTask {
   }
 
   def loadSuite(name: String, loader: ClassLoader): Option[AbstractTestSuite] = {
-    Try(TestUtils.loadModule(name, loader)).toOption
+    Try {
+      // Manually inlined from TestUtils.loadModule(name, loader) Scala 2 macro
+      val clazz = loader.loadClass(name + "$")
+      clazz.getField("MODULE$").get(null)
+    }.toOption
       .collect { case ref: AbstractTestSuite => ref }
   }
 
