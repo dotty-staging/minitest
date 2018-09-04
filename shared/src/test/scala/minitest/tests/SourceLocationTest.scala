@@ -26,5 +26,7 @@ object SourceLocationTest extends SimpleTestSuite {
   test("implicit SourceLocation works") {
     val pos = implicitly[SourceLocation]
     println(pos)
+    assert(pos.line == 27, pos.line.toString)
+    assert(pos.fileName == Some("SourceLocationTest.scala"), pos.fileName.toString)
   }
 }

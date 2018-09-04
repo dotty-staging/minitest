@@ -34,7 +34,7 @@ object SourceLocation {
     val pos = tasty.rootPosition
     val fileName = pos.sourceFile.getFileName.toString
     val path = pos.sourceFile.getParent.toString
-    val line = pos.startLine
+    val line = pos.startLine + 1
     '(SourceLocation(Some(~fileName.toExpr), Some(~path.toExpr), ~line.toExpr))
   }
 
