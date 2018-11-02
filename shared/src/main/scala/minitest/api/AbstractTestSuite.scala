@@ -17,9 +17,9 @@
 
 package minitest.api
 
-import minitest.platform.EnableReflectiveInstantiation
+// import scala.scalajs.reflect.annotation.EnableReflectiveInstantiation
 
-@EnableReflectiveInstantiation
+// @EnableReflectiveInstantiation
 trait AbstractTestSuite {
   def properties: Properties[_]
 }

@@ -268,5 +268,5 @@ lazy val dottySettings = List(
 
 TaskKey[Unit]("dottyCompile") := {
   test.in(minitestJVM, Test).value
-  compile.in(lawsJVM, Compile).value // Test fail to compile
+  compile.in(lawsJVM, Test).value
 }
