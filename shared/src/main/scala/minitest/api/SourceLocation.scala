@@ -29,9 +29,9 @@ final case class SourceLocation(
 object SourceLocation {
   inline implicit def fromContext: SourceLocation = ~fromContextImpl
 
-  def fromContextImpl(implicit tasty: Tasty): Expr[SourceLocation] = {
-    import tasty._
-    val pos = tasty.rootPosition
+  def fromContextImpl(implicit reflect: Reflection): Expr[SourceLocation] = {
+    import reflect._
+    val pos = rootPosition
     val fileName = pos.sourceFile.getFileName.toString
     val path = pos.sourceFile.getParent.toString
     val line = pos.startLine + 1
