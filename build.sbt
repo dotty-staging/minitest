@@ -173,14 +173,14 @@ lazy val lawsJVM    = laws.jvm.settings(dottySettings)
 lazy val lawsJS     = laws.js
 // lazy val lawsNative = laws.native
 
-lazy val dottyVersion = dottyLatestNightlyBuild.get
 lazy val dottySettings = List(
-  scalaVersion := dottyVersion,
   libraryDependencies := libraryDependencies.value.map(_.withDottyCompat(scalaVersion.value)),
   scalacOptions := List()
 )
 
-TaskKey[Unit]("dottyCompile") := {
-  test.in(minitestJVM, Test).value
-  compile.in(lawsJVM, Test).value
-}
+lazy val `dotty-community-build` = project
+  .in(file(".dotty-community-build"))
+  .aggregate(
+    minitestJVM,
+    lawsJVM
+  )
