@@ -18,7 +18,6 @@
 package minitest.api
 
 import scala.quoted._
-import scala.tasty._
 
 final case class SourceLocation(
   fileName: Option[String],
@@ -29,8 +28,8 @@ final case class SourceLocation(
 object SourceLocation {
   inline implicit def fromContext: SourceLocation = ${ fromContextImpl }
 
-  def fromContextImpl(implicit reflect: Reflection): Expr[SourceLocation] = {
-    import reflect._
+  def fromContextImpl(implicit qctx: QuoteContext): Expr[SourceLocation] = {
+    import qctx.tasty._
     val pos = rootPosition
     val fileName = pos.sourceFile.jpath.getFileName.toString
     val path = pos.sourceFile.jpath.getParent.toString
