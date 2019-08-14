@@ -7,7 +7,7 @@ object DoesNotCompileTest extends SimpleTestSuite {
     assertDoesNotCompile("1.noSuchMethod")
   }
 
-  test("assertDoesNotCompile(code, expected)") {
-    assertDoesNotCompile("1.noSuchMethod", ".*?noSuchMethod is not a member of Int")
-  }
+  // test("assertDoesNotCompile(code, expected)") {
+  //   assertDoesNotCompile("1.noSuchMethod", ".*?noSuchMethod is not a member of Int")
+  // }
 }
