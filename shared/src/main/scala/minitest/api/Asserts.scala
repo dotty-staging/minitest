@@ -21,7 +21,9 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import scala.annotation.tailrec
 import scala.reflect.ClassTag
-import scala.quoted._
+
+import scala.compiletime.error
+import scala.compiletime.testing.typeChecks
 
 trait Asserts {
   def assert(condition: => Boolean)(implicit pos: SourceLocation): Unit = {
@@ -70,8 +72,10 @@ trait Asserts {
         pos)
   }
 
-  inline def assertDoesNotCompile(inline code: String): Unit =
-    ${ Asserts.typeChecksOrErrImpl(code) }
+  inline def assertDoesNotCompile(inline code: String): Unit = {
+    inline if (typeChecks(code))
+      error("Type-checking succeeded unexpectedly.")
+  }
 
   // no API for expecting an error message
   // inline def assertDoesNotCompile(inline code: String, inline expected: String): Unit = ???
@@ -122,15 +126,5 @@ object Asserts extends Asserts {
       }
 
     loop(0, tpl)
-  }
-
-  private def typeChecksOrErrImpl(code: String) given (qctx: QuoteContext): Expr[Unit] = {
-    import qctx.tasty._
-    if (typing.typeChecks(code)) {
-      error("Type-checking succeeded unexpectedly.", rootPosition)
-      '{}
-    } else {
-      '{}
-    }
   }
 }
