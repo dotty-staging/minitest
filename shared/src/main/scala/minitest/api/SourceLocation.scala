@@ -18,6 +18,7 @@
 package minitest.api
 
 import scala.quoted._
+import given scala.quoted._
 
 final case class SourceLocation(
   fileName: Option[String],
