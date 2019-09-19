@@ -34,6 +34,6 @@ object SourceLocation {
     val fileName = pos.sourceFile.jpath.getFileName.toString
     val path = pos.sourceFile.jpath.getParent.toString
     val line = pos.startLine + 1
-    '{SourceLocation(Some(${fileName.toExpr}), Some(${path.toExpr}), ${line.toExpr})}
+    '{SourceLocation(Some(${Expr(fileName)}), Some(${Expr(path)}), ${Expr(line)})}
   }
 }
