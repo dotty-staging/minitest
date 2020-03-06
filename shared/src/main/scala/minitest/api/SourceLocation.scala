@@ -29,7 +29,7 @@ object SourceLocation {
   inline implicit def fromContext: SourceLocation = ${ fromContextImpl }
 
   def fromContextImpl(implicit qctx: QuoteContext): Expr[SourceLocation] = {
-    import qctx.tasty.{_, given _}
+    import qctx.tasty._
     val pos = rootPosition
     val fileName = pos.sourceFile.jpath.getFileName.toString
     val path = pos.sourceFile.jpath.getParent.toString
