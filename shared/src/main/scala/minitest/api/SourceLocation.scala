@@ -30,7 +30,7 @@ object SourceLocation {
 
   def fromContextImpl(implicit qctx: QuoteContext): Expr[SourceLocation] = {
     import qctx.reflect._
-    val pos = rootPosition
+    val pos = Position.ofMacroExpansion
     val fileName = pos.sourceFile.jpath.getFileName.toString
     val path = pos.sourceFile.jpath.getParent.toString
     val line = pos.startLine + 1
