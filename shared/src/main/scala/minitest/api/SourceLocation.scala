@@ -28,7 +28,7 @@ final case class SourceLocation(
 object SourceLocation {
   inline implicit def fromContext: SourceLocation = ${ fromContextImpl }
 
-  def fromContextImpl(implicit qctx: QuoteContext): Expr[SourceLocation] = {
+  def fromContextImpl(using Quotes): Expr[SourceLocation] = {
     import qctx.reflect._
     val pos = Position.ofMacroExpansion
     val fileName = pos.sourceFile.jpath.getFileName.toString
