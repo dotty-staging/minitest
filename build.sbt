@@ -41,7 +41,7 @@ ThisBuild / scalacOptions ++= Seq(
 lazy val sharedSettings = Seq(
   // Version specific options
   scalacOptions ++= (
-    if (isDotty.value)
+    if (scalaVersion.value.startsWith("3"))
       Seq()
     else
       Seq(
@@ -67,7 +67,7 @@ lazy val sharedSettings = Seq(
   ),
   Compile / doc / sources := {
     val old = (Compile / doc / sources).value
-    if (isDotty.value)
+    if (scalaVersion.value.startsWith("3"))
       Seq()
     else
       old
@@ -92,13 +92,13 @@ lazy val minitest = crossProject(JVMPlatform, JSPlatform).in(file("."))
     name := "minitest",
     sharedSettings,
     Compile / unmanagedSourceDirectories += (
-      if (isDotty.value)
+      if (scalaVersion.value.startsWith("3"))
         (ThisBuild / baseDirectory).value / "shared/src/main/scala-3"
       else
         (ThisBuild / baseDirectory).value / "shared/src/main/scala-2"
     ),
     libraryDependencies ++= (
-      if (isDotty.value)
+      if (scalaVersion.value.startsWith("3"))
         Seq()
       else
         Seq(
@@ -106,16 +106,16 @@ lazy val minitest = crossProject(JVMPlatform, JSPlatform).in(file("."))
         )
     ),
     libraryDependencies +=
-      ("org.portable-scala" %%% "portable-scala-reflect" % "1.0.0").withDottyCompat(scalaVersion.value)
+      ("org.portable-scala" %%% "portable-scala-reflect" % "1.0.0").cross(CrossVersion.for3Use2_13)
   )
   .jvmSettings(
     libraryDependencies ++= Seq(
-      ("org.scala-sbt" % "test-interface" % "1.0").withDottyCompat(scalaVersion.value)
+      "org.scala-sbt" % "test-interface" % "1.0"
     ),
   )
   .jsSettings(
     scalaJSSettings,
-    libraryDependencies += ("org.scala-js" %% "scalajs-test-interface" % scalaJSVersion).withDottyCompat(scalaVersion.value)
+    libraryDependencies += ("org.scala-js" %% "scalajs-test-interface" % scalaJSVersion).cross(CrossVersion.for3Use2_13)
   )
 
 lazy val minitestJVM    = minitest.jvm
