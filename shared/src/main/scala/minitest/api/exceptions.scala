@@ -19,7 +19,7 @@ package minitest.api
 
 import scala.util.control.NonFatal
 
-abstract class MiniTestException(message: String, cause: Throwable)
+abstract class MiniTestException(message: String|Null, cause: Throwable|Null)
   extends RuntimeException(message, cause)
 
 final class AssertionException(val message: String, val location: SourceLocation)

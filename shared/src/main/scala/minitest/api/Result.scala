@@ -113,7 +113,7 @@ object Result {
     }
 
     val formattedMessage = formatDescription(
-      if (msg != null && msg.nonEmpty) msg else "Test failed",
+      if ((msg:Any) != null && msg.nonEmpty) msg else "Test failed",
       location, color, reset, "  ")
 
     color + s"- $name *** FAILED ***" + reset + EOL +
